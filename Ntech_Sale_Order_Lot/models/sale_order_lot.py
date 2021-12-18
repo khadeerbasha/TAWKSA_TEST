@@ -34,7 +34,7 @@ class AccountMoveLine(models.Model):
 	_inherit = "account.move.line"
 
 	expiration_date = fields.Datetime(related="sale_line_ids.expiration_date", string='Expiration Date')
-	lot_id = fields.Many2one(related="sale_line_ids.lot_id", 'stock.production.lot', string="Lot Number")
+	lot_id = fields.Many2one(related="sale_line_ids.lot_id", string="Lot Number")
 	production_date = fields.Datetime(related="sale_line_ids.production_date", string='Production Date')
 
 	@api.onchange('lot_id')
