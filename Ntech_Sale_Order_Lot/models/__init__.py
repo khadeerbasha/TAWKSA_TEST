@@ -1,2 +1,2 @@
 
-from . import sale_order_lot.py
+from . import sale_order_lot
