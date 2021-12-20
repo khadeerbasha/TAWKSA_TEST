@@ -60,4 +60,27 @@
         </field>
     </record>
     
+     <record id="view_stock_move_line_production_tree_expiry" model="ir.ui.view">
+        <field name="name">stock.move.line.inherit.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="product_expiry.view_stock_move_line_operation_tree_expiry"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expiration_date']" position="after" >
+                <field name="production_date"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_stock_move_line_production_operation_tree_expiry" model="ir.ui.view">
+        <field name="name">stock.move.line.operations.inherit.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="product_expiry.view_stock_move_line_detailed_operation_tree_expiry"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='expiration_date']" position="after">
+                <field name="production_date"/>
+                
+            </xpath>
+        </field>
+    </record>
+    
 </odoo>

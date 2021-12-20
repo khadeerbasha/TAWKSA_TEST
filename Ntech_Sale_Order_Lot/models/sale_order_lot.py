@@ -15,6 +15,29 @@ class StockProductionLot(models.Model):
 	_inherit = "stock.production.lot"
 
 	production_date = fields.Datetime(string='Production Date')
+
+class StockMove(models.Model):
+    _inherit = "stock.move"
+
+    def _prepare_procurement_values(self):
+        res = super(stock_move, self)._prepare_procurement_values()
+        self.ensure_one()
+        if self.sale_line_id and self.sale_line_id.lot_id:
+            res['lot_id'] = self.sale_line_id.lot_id
+        return res
+    
+    
+
+class StockMoveLine(models.Model):
+    _inherit = "stock.move.line"
+
+    production_date = fields.Datetime(string='Production Date')
+    
+    def _assign_production_lot(self, lot):
+        super()._assign_production_lot(lot)
+        self.lot_id.production_date = self.production_date
+
+    
     
 class SaleOrderLine(models.Model):
 	_inherit = "sale.order.line"
