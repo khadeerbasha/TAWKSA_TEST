@@ -43,7 +43,7 @@ class SaleOrderLine(models.Model):
 	_inherit = "sale.order.line"
 
 	expiration_date = fields.Datetime(string='Expiration Date')
-	lot_id = fields.Many2one('stock.production.lot', string="Lot Number", domain="[('product_id', '=', product_id))
+	lot_id = fields.Many2one('stock.production.lot', string="Lot Number", domain="[('product_id', '=', product_id)]")
 	production_date = fields.Datetime(string='Production Date')
 
 	@api.onchange('lot_id')
