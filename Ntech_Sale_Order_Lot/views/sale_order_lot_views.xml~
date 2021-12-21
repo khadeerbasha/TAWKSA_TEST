@@ -30,20 +30,7 @@
         </field>
     </record>
     
-    <record id="view_order_form_lot_number" model="ir.ui.view">
-        <field name="name">sale.order.lot.form</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">    
-                   
-            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
-                <field name="production_date"/>
-                <field name="lot_id"/>
-                <field name="expiration_date"/>
-            </xpath>
-            
-        </field>
-    </record>
+    
     
     <record id="view_move_form_lot_number" model="ir.ui.view">
         <field name="name">account.move.lot.form</field>
@@ -52,11 +39,28 @@
         <field name="arch" type="xml">    
  
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
-                <field name="production_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}"/>
-                <field name="lot_id" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}"/>
-                <field name="expiration_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}"/>
+                
+                <field name="lot_id" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}" readonly="1" force_save="1"/>
+                <field name="production_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}" readonly="1" force_save="1"/>
+                <field name="expiration_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}" readonly="1" force_save="1"/>
             </xpath>
                 
+        </field>
+    </record>
+    
+    <record id="view_order_form_lot_number" model="ir.ui.view">
+        <field name="name">sale.order.lot.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">    
+                   
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+                
+                <field name="lot_id"/>
+                <field name="production_date" readonly="1" force_save="1"/>
+                <field name="expiration_date" readonly="1" force_save="1"/>
+            </xpath>
+            
         </field>
     </record>
     
@@ -65,12 +69,8 @@
         <field name="model">stock.move.line</field>
         <field name="inherit_id" ref="product_expiry.view_stock_move_line_operation_tree_expiry"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='lot_name']" position="after" >
-                <field name="picking_type_use_existing_lots" invisible="1"/>
-                <field name="expiration_date" force_save="1" attrs="{
-                    'column_invisible': ['|', ('parent.use_expiration_date', '!=', True), ('parent.picking_code', '!=', 'incoming')],
-                    'readonly': [('picking_type_use_existing_lots', '=', True)],
-                }"/>
+            <xpath expr="//field[@name='expiration_date']" position="after" >
+                <field name="production_date"/>
             </xpath>
         </field>
     </record>
@@ -80,12 +80,9 @@
         <field name="model">stock.move.line</field>
         <field name="inherit_id" ref="product_expiry.view_stock_move_line_detailed_operation_tree_expiry"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='lot_name']" position="after">
-                <field name="picking_type_use_existing_lots" invisible="1"/>
-                <field name="expiration_date" force_save="1" attrs="{
-                    'column_invisible': [('parent.picking_type_code', '!=', 'incoming')],
-                    'readonly': [('picking_type_use_existing_lots', '=', True)],
-                }"/>
+            <xpath expr="//field[@name='expiration_date']" position="after">
+                <field name="production_date"/>
+                
             </xpath>
         </field>
     </record>

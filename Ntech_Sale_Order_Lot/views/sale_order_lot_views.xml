@@ -37,9 +37,10 @@
         <field name="arch" type="xml">    
                    
             <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
-                <field name="production_date"/>
+                
                 <field name="lot_id"/>
-                <field name="expiration_date"/>
+                <field name="production_date" readonly="1" force_save="1"/>
+                <field name="expiration_date" readonly="1" force_save="1"/>
             </xpath>
             
         </field>
@@ -52,9 +53,10 @@
         <field name="arch" type="xml">    
  
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
-                <field name="production_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}"/>
-                <field name="lot_id" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}"/>
-                <field name="expiration_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}"/>
+                
+                <field name="lot_id" force_save="1" readonly="1" attrs="{'column_invisible': [('parent.move_type', '!=', 'out_invoice')]}"/>
+                <field name="production_date" attrs="{'column_invisible': [('parent.move_type', '!=', 'out_invoice')]}"/>
+                <field name="expiration_date" attrs="{'column_invisible': [('parent.move_type', '!=', 'out_invoice')]}"/>
             </xpath>
                 
         </field>

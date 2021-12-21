@@ -17,25 +17,25 @@ class StockProductionLot(models.Model):
 	production_date = fields.Datetime(string='Production Date')
 
 class StockMove(models.Model):
-    _inherit = "stock.move"
+	_inherit = "stock.move"
 
-    def _prepare_procurement_values(self):
-        res = super(stock_move, self)._prepare_procurement_values()
-        self.ensure_one()
-        if self.sale_line_id and self.sale_line_id.lot_id:
-            res['lot_id'] = self.sale_line_id.lot_id
-        return res
-    
+	def _prepare_procurement_values(self):
+		res = super(stock_move, self)._prepare_procurement_values()
+		self.ensure_one()
+		if self.sale_line_id and self.sale_line_id.lot_id:
+			res['lot_id'] = self.sale_line_id.lot_id
+		return res
+
     
 
 class StockMoveLine(models.Model):
-    _inherit = "stock.move.line"
+	_inherit = "stock.move.line"
 
-    production_date = fields.Datetime(string='Production Date')
-    
-    def _assign_production_lot(self, lot):
-        super()._assign_production_lot(lot)
-        self.lot_id.production_date = self.production_date
+	production_date = fields.Datetime(string='Production Date')
+
+	def _assign_production_lot(self, lot):
+		super()._assign_production_lot(lot)
+		self.lot_id.production_date = self.production_date
 
     
     
@@ -43,22 +43,29 @@ class SaleOrderLine(models.Model):
 	_inherit = "sale.order.line"
 
 	expiration_date = fields.Datetime(string='Expiration Date')
-	lot_id = fields.Many2one('stock.production.lot', string="Lot Number")
+	lot_id = fields.Many2one('stock.production.lot', string="Lot Number", domain="[('product_id', '=', product_id)]")
 	production_date = fields.Datetime(string='Production Date')
+
+		
+	def _prepare_invoice_line(self, **optional_values):
+		invoice_line = super(SaleOrderLine, self)._prepare_invoice_line(**optional_values)
+		invoice_line['lot_id'] = self.lot_id.id
+		return invoice_line
 
 	@api.onchange('lot_id')
 	def onchange_lot_id(self):
 		if self.lot_id:
 			self.expiration_date = self.lot_id.expiration_date
 			self.production_date = self.lot_id.production_date
-    
+
     
 class AccountMoveLine(models.Model):
 	_inherit = "account.move.line"
 
-	expiration_date = fields.Datetime(related="sale_line_ids.expiration_date", string='Expiration Date')
-	lot_id = fields.Many2one(related="sale_line_ids.lot_id", string="Lot Number")
-	production_date = fields.Datetime(related="sale_line_ids.production_date", string='Production Date')
+	
+	lot_id = fields.Many2one('stock.production.lot', string="Lot Number")
+	production_date = fields.Datetime(related="lot_id.production_date", string='Production Date')
+	expiration_date = fields.Datetime(related="lot_id.expiration_date", string='Expiration Date')
 
 	@api.onchange('lot_id')
 	def onchange_lot_id(self):
