@@ -2,54 +2,326 @@
 <openerp>
 <data>
 <template id="report_invoice_arabic_english_print">
+
 <t t-call="web.html_container">
-        <t t-foreach="docs" t-as="o">
-    <t t-call="web.external_layout">
-        <div class="page" style="font-family:Arial;">
-            <!--div class="row">
-                
-                <div align="left">
-                    <span t-field="o.qr_image" style="width:100px;height:100px;float:left;" t-options="{&quot;widget&quot;: &quot;image&quot;}"/>
+  
+        <t t-foreach="docs" t-as="doc">
+          
+        <div class="page" style="font-family:Arial;" t-if="doc.partner_id.company_type">
+         
+        <style>
+            table {
+            border-collapse: collapse;
 
-                        </div>
-                        <div class="col-xs-5 col-xs-offset-17">
-    <address t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
 
-                    VAT: <span t-field="o.partner_id.vat"/>
-                </div>
-            </div-->
+            }
+            th {
+            background: #fff;
+            padding: 8px;
+
+            }
+
+            th, td {
+            border: 1px solid #b7b7b7;
+            padding: 4px;
+            font-weight:300 ;
+            font-size:14px;
+            }
+
+        </style>
+        <div >
             
-             <table width="100%">
-                <tr>
-                    <td width="55%">
+
+            <h2 style="text-align:center;color:#6f7576;">TAX INVOICE</h2>
+            
+   
+                <div class="col-md-6">
+                    <table class="my_table" style="width:100%;border:2px solid #b7b7b7;direction: ltr;">
+                        <tr>
+                            <td style="width:00% ;">PO No:</td>
+                            <td style="width:10% ;">Page No</td>
+                                <!--t t-esc="doc.name"/-->
+                            <td style="width:10% ;">TAQNYET AD </td>
+                            <td style="width:20% ;">D.date </td>
+                            <td style="width:20% ;">Date </td>  
+                            <td style="width:20% ;">Invoice No :  <t t-esc="doc.name"/> : </td>
+                        <!--   <td style="width:20% ;">Invoice No :  <t t-esc="doc.name"/> : رقم الفاتورة </td>-->
+                        </tr>
+                    </table>
+                    <br/>
+                    <table class="my_table" style="width:100%;border:2px solid #b7b7b7;direction: ltr;">
+                        <tr>
+                            <td style="width:11% ;">VAT No:</td>
+                            <td style="width:8% ;">Postal Code</td>
+                            <td style="width:8% ;">Country</td>
+                            <td style="width:11% ;">Address</td>
+                            <td style="width:8% ;">Area</td>  
+                            <td style="width:8% ;">Building No </td>
+                            <td style="width:8% ;">City</td>
+                            <td style="width:8% ;">Branch</td>
+                            <td style="width:8% ;">Phone</td>
+                            <td style="width:14% ;">Comapany Name</td>
+                            <td style="width:8% ;">Info</td>
+                        </tr>
+                        <tr>
+                            <td style="width:11% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:11% ;"></td>
+                            <td style="width:8% ;"></td> 
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:14% ;"></td>
+                            <td style="width:8% ;">Seller</td>
+                        </tr>
+                        <tr>
+                            <td style="width:11% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:11% ;"></td>
+                            <td style="width:8% ;"></td> 
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:8% ;"></td>
+                            <td style="width:14% ;"></td>
+                            <td style="width:8% ;">Customer</td>
+                        </tr>
+                    </table>
+                </div>
+        </div>
+        <br/>
+      <!--th name="th_quantity" class="text-right" style="font-weight:500 ;text-align:center ;color:#fff ;background-color:#727272 ;font-size:12px ;padding:10px !imporatnt;">
+                    Unit price<br/>سعر الوحدة
+                </th-->
+        <table class="table table-sm o_main_table" style="width:100%;direction: ltr;">
+             
+            <thead  style="border:2px solid #b7b7b7;width:100%;display: table-row-group">
+                <th style="width:14% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Item
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    BL
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Exp Date
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Unit
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Qty
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Unit Price
+                </th>
+                <th style="width:8% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Total Value
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    DISC %
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    DISC Value
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    NET Value
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    VAT
+                </th>
+                <th style="width:7% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    VAT Amount
+                </th>
+                <th style="width:8% ;text-align:center ;font-size:12px ;padding:10px !imporatnt;">
+                    Total+Vat
+                </th>
                 
-                      <!--span t-field="o.qr_image" style="width:100px;height:100px;float:left;" t-options="{&quot;widget&quot;: &quot;image&quot;}"/-->
-                <span>.</span>
-                        <p style="font-size: 12pt;"> <span>TAX Invoice فاتورة ضريبة</span>
-                        
-                        
-                        
-                        </p>
-                         <p style="font-size: 12pt;"><span t-if="o.name != '/'" t-field="o.name"/> </p>
-                      
+            </thead>
+            <tbody class="sale_tbody">
+                <tr t-foreach="doc.invoice_line_ids" t-as="line">
+                    <t t-set="tax_total" t-value="0"/>
+                    <t t-foreach="line.tax_ids" t-as="t">
+                        <t t-set="tax_total" t-value="tax_total+t.amount"/>
+                    </t>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.name"/>
                     </td>
-                    
-                    <td width="45%">
-                      <div>  
-                      <span><b><u>Customer العميل</u></b></span>
-                       <address style="font-size: 8pt;" t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
-                       <p style="font-size: 8pt;">الرقم الضريبي:VAT:  <span t-field="o.partner_id.vat"/></p> 
-                      </div>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.lot_id.name"/>
+                    </td>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.expiration_date"/>
+                    </td>
+                     <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.quantity"/>
+                    </td>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.quantity"/>
+                    </td>
+                     <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.price_unit"/>
+                    </td>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.price_unit"/>
+                    </td>
+                     <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.discount"/>
+                    </td>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.discount"/>
+                    </td>
+                    <td style="border:2px solid #b7b7b7;">
+                        <span t-esc="line.price_subtotal"/>
+                    </td>
+                     <td style="border:2px solid #b7b7b7;">
+                   <span t-esc="', '.join(map(lambda x: x.name, line.tax_ids))"/>
+                    </td>
+                    <td style="border:2px solid #b7b7b7;">
+                        <t t-esc="(line.tax_ids[0].amount*100) / 100 * line.price_subtotal if len(line.tax_ids) &gt; 0 else ''"/> 
+                   </td>
+                   <td style="border:2px solid #b7b7b7;">
+                        <t t-esc="(1 + (line.tax_ids[0].amount*100) / 100) * line.price_subtotal if len(line.tax_ids) &gt; 0 else line.price_subtotal"/>
                     </td>
                 </tr>
-             </table>
-             
+            </tbody>
+        </table>
+       
+        <table class="my_table" style="width:100%;border:2px solid #b7b7b7;direction: ltr;">
+                        <tr>
+                            <td style="width:20% ;">Total : <t t-esc="doc.amount_untaxed"/></td>
+                            <td style="width:20% ;">Discount :</td>
+                            <td style="width:20% ;">NET : <t t-esc="doc.amount_untaxed"/></td>
+                            <td style="width:20% ;">Vat : <t t-esc="doc.amount_untaxed"/></td>
+                            <td style="width:20% ;">Amount : <t t-esc="doc.amount_total"/></td>  
+                        </tr>
+        </table>
+         <br/>
+        <table style="width:100%;border:1px solid #ffffff;direction: ltr;">
+           <tr>
+                <td style="width:35%;border:1px solid #ffffff;">
+                  <table style="width:100%;border:1px solid #ffffff;">
+                    <tr>
+                      <td style="text-align:left;border:1px solid #ffffff;"> Prepared By:</td>
+                      <td style="text-align:right;border:1px solid #ffffff;"> Prepared By:</td>
+                    </tr>
                    
-
+                     <tr>
+                       <td style="text-align:left;border:1px solid #ffffff;"> Name:</td>
+                        <td style="text-align:right;border:1px solid #ffffff;"> Name:</td>
+                    </tr>
+                     <tr>
+                       <td style="text-align:left;border:1px solid #ffffff;"> Sign:</td>
+                        <td style="text-align:right;border:1px solid #ffffff;"> Sign:</td>
+                    </tr>
+                    
+                    </table>
+                </td>
+                <td style="width:35%;border:1px solid #ffffff;">
+                  <div>
+    <!--img t-if="doc.l10n_sa_qr_code_str" style="display:block;margin:10% auto 0 auto;" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', doc.l10n_sa_qr_code_str, 100, 100)"/-->
+     <img t-att-src="'/report/barcode/?type=QR&amp;width=400&amp;height=400&amp;value=' +doc.l10n_sa_qr_code_str" style="width:120px;height:120px"/>        
             
-        </div>
-        </t>
-       </t></t>
+                  </div>
+                </td>
+                <td style="width:35%;border:1px solid #ffffff;">
+                  <table style="width:100%;border:1px solid #ffffff;">
+                    <tr>
+                      <td style="text-align:left;border:1px solid #ffffff;"> Recieved By:</td>
+                      <td style="text-align:right;border:1px solid #ffffff;"> Recieved By:</td>
+                    </tr>
+                   
+                     <tr>
+                       <td style="text-align:left;border:1px solid #ffffff;"> Date:</td>
+                        <td style="text-align:right;border:1px solid #ffffff;"> Date:</td>
+                    </tr>
+                     <tr>
+                       <td style="text-align:left;border:1px solid #ffffff;"> Name:</td>
+                        <td style="text-align:right;border:1px solid #ffffff;"> Name:</td>
+                    </tr>
+                     <tr>
+                       <td style="text-align:left;border:1px solid #ffffff;"> Stamp:</td>
+                        <td style="text-align:right;border:1px solid #ffffff;"> Stamp:</td>
+                    </tr>
+                    
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <!--table class="table table-sm o_main_table" style="width:100%;background-color:#999999;direction: ltr;">
+            <thead>
+                <tr>
+                    <td style="text-align:left;width:50% ;color:#fff ;padding:8px ;">
+                        Total Amounts:
+                    </td>
+                    <td style="text-align:right;color:#fff ;padding:8px ;">اجمالي المبلغ</td>
+                </tr>
+            </thead>
+        </table>
+        <table class="my_table" style="width:100%;direction: ltr;">              
+
+           
+            <tr>
+                <td style="width:40% "/>
+                <td>Total Amount (Excluding VAT)</td>
+                <td style="text-align: right;">الاجمالي</td>
+                <td style="width:10% ">
+                    <t t-esc="doc.amount_untaxed+sum(line.discount_price for line in doc.invoice_line)"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width:40% "/>
+                <td>Discount</td>
+                <td style="text-align: right;">خصم</td>
+                <td style="width:10% ">
+                    <t t-esc="sum(line.discount_price for line in doc.invoice_line)"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:40% "/>
+                <td>After Discount</td>
+                <td style="text-align: right;">بعد الخصم</td>
+                <td style="width:10% ">
+                    <t t-esc="doc.amount_untaxed"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td style="width:40% "/>
+                <td>Total VAT</td>
+                <td style="text-align: right;">ضريبة القيمة المضافة</td>
+                <td style="width:10% ">
+                    <t t-esc="doc.amount_tax"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:30% "/>
+                <td>Total (Including VAT)</td>
+                <td style="width:30% ;text-align: right;">الاجمالي مع الضريبة
+                    
+                </td>
+                <td style="width:10% ">
+                    <t t-esc="doc.amount_total"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="width:40% "/>
+                <td>Total Amount Due</td>
+                <td style="text-align: right;">إجمالي المبلغ المستحق</td>
+                <td style="width:10% ">
+                    <t t-esc="doc.amount_residual"/>
+                </td>
+            </tr>
+        </table-->
+       </div>
+        <!--/t-->
+       </t>
+</t>
+
 </template>
 
 </data>
