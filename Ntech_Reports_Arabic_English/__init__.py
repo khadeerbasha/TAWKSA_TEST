@@ -1,1 +1,1 @@
-#import invoice_arabic
+from . import invoice_arabic

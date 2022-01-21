@@ -4,12 +4,65 @@
 
         <report 
             id="report_account_invoice_arabic_english"
-            string="Invoice Arabic/English"
+            string="TAX Invoice PRD"
             model="account.move"
             report_type="qweb-pdf"
             file="Ntech_Reports_Arabic_English.report_invoice_arabic_english_print"
             name="Ntech_Reports_Arabic_English.report_invoice_arabic_english_print"
         />
+        
+        <report 
+            id="report_account_invoice_arabic_english"
+            string="TAX Invoice"
+            model="account.move"
+            report_type="qweb-pdf"
+            file="Ntech_Reports_Arabic_English.report_invoice_arabic_english_print"
+            name="Ntech_Reports_Arabic_English.report_invoice_arabic_english_print"
+        />
+        
+        <record id="discount_account_move_view_form" model="ir.ui.view">
+            <field name="name">account.move</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='discount']" position="after">
+
+                    <field name="discount_price"/>
+                </xpath>                   
+            </field>
+        </record>
+        
+        <record id="view_partner_form_building" model="ir.ui.view">
+        <field name="name">res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">    
+
+            <field name="vat" position="after">
+                <field name="building_no"/>   
+                <field name="area"/> 
+                <field name="postal_code"/> 
+                <field name="branch_name"/>     
+            </field>
+            
+        </field>
+    </record>
+    
+    <record id="view_company_form_branch" model="ir.ui.view">
+        <field name="name">res.company.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">    
+
+            <field name="vat" position="after">
+                <field name="building_no"/>   
+                <field name="area"/> 
+                <field name="postal_code"/> 
+                <field name="branch_name"/>     
+            </field>
+            
+        </field>
+    </record>
 
     </data>
 </openerp>

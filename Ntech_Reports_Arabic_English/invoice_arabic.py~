@@ -1,0 +1,36 @@
+import itertools
+from lxml import etree
+
+from openerp import models, fields, api, _
+from openerp.exceptions import except_orm, Warning, RedirectWarning
+from openerp.tools import float_compare
+import openerp.addons.decimal_precision as dp
+
+class account_move_line(models.Model):
+    _inherit = "account.move.line"
+
+    @api.one
+    @api.depends('price_unit', 'discount',  'quantity')
+    def _compute_discount_price(self):
+        if self.discount:
+            disc_price = self.price_unit * self.quantity
+            tab = (disc_price*(self.discount/100))
+            self.discount_price = tab
+
+
+    discount_price = fields.Float(string='Discount Amount', store=True, readonly=True, compute='_compute_discount_price')
+    
+    
+class ResPartner(models.Model):
+	_inherit = "res.partner"
+
+	building_no = fields.Char(string='Building No.')
+	area = fields.Char(string='Area')
+	postal_code = fields.Char(string='Postal Code')
+	branch_name = fields.Char(string='Branch Name')
+	
+	
+class ResCompany(models.Model):
+	_inherit = "res.company"
+
+	branch_name = fields.Char(string='Branch Name')
