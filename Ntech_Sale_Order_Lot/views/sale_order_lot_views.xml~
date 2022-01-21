@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="view_company_form_building" model="ir.ui.view">
-        <field name="name">res.company.form</field>
-        <field name="model">res.company</field>
-        <field name="inherit_id" ref="base.view_company_form"/>
-        <field name="arch" type="xml">    
+    
+    
+     <record id="view_picking_form_lot_so" model="ir.ui.view">
+            <field name="name">stock.picking.inherit.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <button name="action_confirm" position="after">
+                    <button name="action_lot_number_Set" type="object" string="Transfer Lots SO" class="oe_highlight"/>
+                </button>
 
-            <field name="vat" position="before">
-                <field name="building_no"/>   
-                <field name="area"/>   
-                <field name="postal_code"/>     
             </field>
-            
-        </field>
-    </record>
-    
-    
+        </record>
+        
+        
+        
     <record id="view_move_form_expiry_lot_number" model="ir.ui.view">
         <field name="name">stock.production.lot.form</field>
         <field name="model">stock.production.lot</field>
@@ -30,7 +30,26 @@
         </field>
     </record>
     
-    
+    <record id="view_order_form_lot_number" model="ir.ui.view">
+        <field name="name">sale.order.lot.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">    
+                   
+            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
+                
+                <field
+                    name="lot_id"
+                    domain="[('product_id','=', product_id)]"
+                    context="{'default_product_id': product_id}"
+                    
+                />
+                <field name="production_date" readonly="1" force_save="1"/>
+                <field name="expiration_date" readonly="1" force_save="1"/>
+            </xpath>
+            
+        </field>
+    </record>
     
     <record id="view_move_form_lot_number" model="ir.ui.view">
         <field name="name">account.move.lot.form</field>
@@ -40,27 +59,12 @@
  
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="before">
                 
-                <field name="lot_id" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}" readonly="1" force_save="1"/>
-                <field name="production_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}" readonly="1" force_save="1"/>
-                <field name="expiration_date" attrs="{'invisible': [('parent.move_type', '=', 'out_invoice')]}" readonly="1" force_save="1"/>
-            </xpath>
-                
-        </field>
-    </record>
-    
-    <record id="view_order_form_lot_number" model="ir.ui.view">
-        <field name="name">sale.order.lot.form</field>
-        <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
-        <field name="arch" type="xml">    
-                   
-            <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="before">
-                
-                <field name="lot_id"/>
-                <field name="production_date" readonly="1" force_save="1"/>
-                <field name="expiration_date" readonly="1" force_save="1"/>
+                <field name="lot_id" force_save="1" readonly="1" attrs="{'column_invisible': [('parent.move_type', '!=', 'out_invoice')]}"/>
+                <field name="production_date" attrs="{'column_invisible': [('parent.move_type', '!=', 'out_invoice')]}"/>
+                <field name="expiration_date" attrs="{'column_invisible': [('parent.move_type', '!=', 'out_invoice')]}"/>
             </xpath>
             
+           
         </field>
     </record>
     
@@ -81,10 +85,13 @@
         <field name="inherit_id" ref="product_expiry.view_stock_move_line_detailed_operation_tree_expiry"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='expiration_date']" position="after">
+                <button name="action_lot_set" type="object" string="SET"/>
                 <field name="production_date"/>
                 
             </xpath>
         </field>
     </record>
+    
+    
     
 </odoo>
