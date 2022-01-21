@@ -3,7 +3,7 @@
 <data>
 <template id="report_invoice_arabic_english_print">
 
-    <t t-call="web.html_container">
+  <t t-call="web.html_container">
   
         <t t-foreach="docs" t-as="doc">
           
@@ -38,7 +38,7 @@
                 <div class="col-md-6">
                     <table class="my_table" style="width:100%;border:2px solid #b7b7b7;font-size:12px ;direction: ltr;">
                         <tr>
-                            <td style="width:12% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">PO No : <t t-esc="doc.payment_reference"/></td>
+                            <td style="width:12% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">PO No : <t t-esc="doc.ref"/></td>
                             <td style="width:11% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">Page No : <span class="page"/>/<span class="topage"/> :الصفحة </td>
                             <td style="width:12% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;"><t t-esc="doc.employee_id.name"/>: المندوب</td>
                             <td style="width:17% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">D.date : <t t-esc="doc.invoice_date_due"/> :تاريخ الاستحقاق </td>
@@ -166,29 +166,29 @@
                         <span t-esc="line.quantity"/>
                     </td>
                      <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="round(line.price_unit)" t-options='{"widget": "float", "precision": 2}'/>
+                        <span t-esc="line.price_unit" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                         <span t-esc="round(line.price_unit*line.quantity)" t-options='{"widget": "float", "precision": 2}'/>
+                         <span t-esc="line.price_unit*line.quantity" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                      <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="line.discount"/>
+                        <span t-esc="line.discount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 0}"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="line.discount_price"/>
+                        <span t-esc="line.discount_price" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="round(line.price_subtotal)" t-options='{"widget": "float", "precision": 2}'/>
+                        <span t-esc="line.price_subtotal" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                      <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
                    <span t-esc="', '.join(map(lambda x: x.name, line.tax_ids))"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
                       <t t-if="line.tax_ids">
-                        <t t-esc="round((((line.tax_ids[0].amount)/100)*100) / 100 * line.price_subtotal if len(line.tax_ids) &gt; 0 else '')" t-options='{"widget": "float", "precision": 2}'/></t>
+                        <t t-esc="(((line.tax_ids[0].amount)/100)*100) / 100 * line.price_subtotal if len(line.tax_ids) &gt; 0 else ''" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></t>
                    </td>
                    <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <t t-esc="round((1 + (((line.tax_ids[0].amount)/100)*100) / 100) * line.price_subtotal if len(line.tax_ids) &gt; 0 else line.price_subtotal)" t-options='{"widget": "float", "precision": 2}'/>
+                        <t t-esc="(1 + (((line.tax_ids[0].amount)/100)*100) / 100) * line.price_subtotal if len(line.tax_ids) &gt; 0 else line.price_subtotal" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                 </tr>
             </tbody>
@@ -196,13 +196,13 @@
        
         <table class="my_table" style="width:100%;border:2px solid #b7b7b7;direction: ltr;">
                         <tr>
-                        <td style="width:20% ;text-align:center;">Total : <t t-esc="doc.amount_untaxed+sum(line.discount_price for line in doc.invoice_line_ids)" t-options='{"widget": "float", "precision": 2}'/> : الاجمالى</td>
+                        <td style="width:20% ;text-align:center;">Total : <t t-esc="doc.amount_untaxed+sum(line.discount_price for line in doc.invoice_line_ids)" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الاجمالى</td>
 
                             
-                            <td style="width:20% ;text-align:center;">Discount : <t t-esc="sum(line.discount_price for line in doc.invoice_line_ids)"/> : الخصم</td>
-                            <td style="width:20% ;text-align:center;">NET : <t t-esc="doc.amount_untaxed" t-options='{"widget": "float", "precision": 2}'/> : الصافى</td>
-                            <td style="width:20% ;text-align:center;">Vat :<t t-esc="doc.amount_tax"/> :الضرائب </td>
-                            <td style="width:20% ;text-align:center;">Amount : <t t-esc="doc.amount_total" t-options='{"widget": "float", "precision": 2}'/> : الاجمالى مع الضريبة</td>  
+                            <td style="width:20% ;text-align:center;">Discount : <t t-esc="sum(line.discount_price for line in doc.invoice_line_ids)" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الخصم</td>
+                            <td style="width:20% ;text-align:center;">NET : <t t-esc="doc.amount_untaxed" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الصافى</td>
+                            <td style="width:15% ;text-align:center;">Vat :<t t-esc="doc.amount_tax"/> :الضرائب </td>
+                            <td style="width:25% ;text-align:center;">Amount : <t t-esc="doc.amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الاجمالى مع الضريبة</td>  
                         </tr>
         </table>
          <br/>
@@ -263,7 +263,6 @@
 
        </t>
 </t>
-
 </template>
 
 <template id="report_invoice_arabic_english_print_prd">
@@ -303,7 +302,7 @@
                 <div class="col-md-6">
                     <table class="my_table" style="width:100%;border:2px solid #b7b7b7;font-size:12px ;direction: ltr;">
                         <tr>
-                            <td style="width:12% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">PO No : <t t-esc="doc.payment_reference"/></td>
+                            <td style="width:12% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">PO No : <t t-esc="doc.ref"/></td>
                             <td style="width:11% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">Page No : <span class="page"/>/<span class="topage"/> :الصفحة </td>
                             <td style="width:12% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;"><t t-esc="doc.employee_id.name"/>: المندوب</td>
                             <td style="width:17% ;font-size:13px ;text-align:center;border:2px solid #b7b7b7;">D.date : <t t-esc="doc.invoice_date_due"/> :تاريخ الاستحقاق </td>
@@ -431,29 +430,29 @@
                         <span t-esc="line.quantity"/>
                     </td>
                      <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="round(line.price_unit)" t-options='{"widget": "float", "precision": 2}'/>
+                        <span t-esc="line.price_unit" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                         <span t-esc="round(line.price_unit*line.quantity)" t-options='{"widget": "float", "precision": 2}'/>
+                         <span t-esc="line.price_unit*line.quantity" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                      <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="line.discount"/>
+                        <span t-esc="line.discount" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 0}"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="line.discount_price"/>
+                        <span t-esc="line.discount_price" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <span t-esc="round(line.price_subtotal)" t-options='{"widget": "float", "precision": 2}'/>
+                        <span t-esc="line.price_subtotal" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                      <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
                    <span t-esc="', '.join(map(lambda x: x.name, line.tax_ids))"/>
                     </td>
                     <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
                       <t t-if="line.tax_ids">
-                        <t t-esc="round((((line.tax_ids[0].amount)/100)*100) / 100 * line.price_subtotal if len(line.tax_ids) &gt; 0 else '')" t-options='{"widget": "float", "precision": 2}'/></t>
+                        <t t-esc="(((line.tax_ids[0].amount)/100)*100) / 100 * line.price_subtotal if len(line.tax_ids) &gt; 0 else ''" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/></t>
                    </td>
                    <td style="border:2px solid #b7b7b7;font-size:12px ;text-align:center;">
-                        <t t-esc="round((1 + (((line.tax_ids[0].amount)/100)*100) / 100) * line.price_subtotal if len(line.tax_ids) &gt; 0 else line.price_subtotal)" t-options='{"widget": "float", "precision": 2}'/>
+                        <t t-esc="(1 + (((line.tax_ids[0].amount)/100)*100) / 100) * line.price_subtotal if len(line.tax_ids) &gt; 0 else line.price_subtotal" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/>
                     </td>
                 </tr>
             </tbody>
@@ -461,13 +460,13 @@
        
         <table class="my_table" style="width:100%;border:2px solid #b7b7b7;direction: ltr;">
                         <tr>
-                        <td style="width:20% ;text-align:center;">Total : <t t-esc="doc.amount_untaxed+sum(line.discount_price for line in doc.invoice_line_ids)" t-options='{"widget": "float", "precision": 2}'/> : الاجمالى</td>
+                        <td style="width:20% ;text-align:center;">Total : <t t-esc="doc.amount_untaxed+sum(line.discount_price for line in doc.invoice_line_ids)" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الاجمالى</td>
 
                             
-                            <td style="width:20% ;text-align:center;">Discount : <t t-esc="sum(line.discount_price for line in doc.invoice_line_ids)"/> : الخصم</td>
-                            <td style="width:20% ;text-align:center;">NET : <t t-esc="doc.amount_untaxed" t-options='{"widget": "float", "precision": 2}'/> : الصافى</td>
-                            <td style="width:20% ;text-align:center;">Vat :<t t-esc="doc.amount_tax"/> :الضرائب </td>
-                            <td style="width:20% ;text-align:center;">Amount : <t t-esc="doc.amount_total" t-options='{"widget": "float", "precision": 2}'/> : الاجمالى مع الضريبة</td>  
+                            <td style="width:20% ;text-align:center;">Discount : <t t-esc="sum(line.discount_price for line in doc.invoice_line_ids)" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الخصم</td>
+                            <td style="width:20% ;text-align:center;">NET : <t t-esc="doc.amount_untaxed" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الصافى</td>
+                            <td style="width:15% ;text-align:center;">Vat :<t t-esc="doc.amount_tax"/> :الضرائب </td>
+                            <td style="width:25% ;text-align:center;">Amount : <t t-esc="doc.amount_total" t-options="{&quot;widget&quot;: &quot;float&quot;, &quot;precision&quot;: 2}"/> : الاجمالى مع الضريبة</td>  
                         </tr>
         </table>
          <br/>
