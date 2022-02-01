@@ -43,7 +43,7 @@ sale_order()
 class ProductTemplate(models.Model):
 	_inherit = 'product.template'
 
-	type = fields.Selection(selection_add=[('product', 'Storable Product')], default='product', tracking=True)
+	type = fields.Selection(selection_add=[('product', 'Storable Product')], default='product', ondelete={'product': 'set consu'})
 
 	'''type = fields.Selection([
 		('consu', 'Consumable'),
